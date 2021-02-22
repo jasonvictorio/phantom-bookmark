@@ -1,9 +1,11 @@
 <ul>
   <li *ngFor="let bookmark of bookmarks" class="flex mb">
-    <button type="button" (click)="deleteBookmark.emit(bookmark)">
+    <button type="button" (click)="deleteBookmark.emit(bookmark)" class="mr">
       delete
     </button>
-    <button type="button" (click)="editBookmark.emit(bookmark)">edit</button>
+    <button type="button" (click)="editBookmark.emit(bookmark)" class="mr">
+      edit
+    </button>
     <div>{{ bookmark.id }}: {{ bookmark.url }}</div>
   </li>
 </ul>
