@@ -1,6 +1,6 @@
-<form [formGroup]="bookmarkForm" (ngSubmit)="onFormSubmit()">
+<form [formGroup]="bookmarkForm" (ngSubmit)="onFormSubmit()" class="mb-l">
   <label>
-    <span>url</span>
+    <span>add new bookmark url: </span>
     <input formControlName="url" />
   </label>
 

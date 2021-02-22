@@ -1,12 +1,12 @@
 <div>
-  <div>Thank you for submitting your bookmark</div>
+  <div class="title mb-l">Thank you for submitting your bookmark</div>
 
-  <div>Here is your receipt</div>
+  <div class="mb">Here is your receipt</div>
 
-  <div class="results-bookmark">
-    <div class="results-property" *ngFor="let property of bookmark | keyvalue">
-      <div class="results-label">{{ property.key }}</div>
-      <div class="results-value">{{ property.value }}</div>
+  <div class="mb-l">
+    <div class="flex" *ngFor="let property of bookmark | keyvalue">
+      <div>{{ property.key }}: &nbsp;</div>
+      <div>{{ property.value }}</div>
     </div>
   </div>
 
