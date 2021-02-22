@@ -18,11 +18,6 @@ export class FormComponent {
 
   onFormSubmit() {
     const newBookmark: Omit<Bookmark, 'id'> = this.bookmarkForm.value;
-    this.submitForm.emit([
-      newBookmark,
-      () => {
-        this.bookmarkForm.reset();
-      },
-    ]);
+    this.submitForm.emit(newBookmark);
   }
 }

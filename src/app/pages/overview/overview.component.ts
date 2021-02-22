@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Bookmark } from 'src/app/models/bookmark';
 import { BookmarkService } from 'src/app/services/bookmark.service';
 
@@ -10,7 +12,10 @@ import { BookmarkService } from 'src/app/services/bookmark.service';
 export class OverviewComponent implements OnInit {
   bookmarks: Bookmark[] = [];
 
-  constructor(private bookmarkService: BookmarkService) {}
+  constructor(
+    private router: Router,
+    private bookmarkService: BookmarkService
+  ) {}
 
   ngOnInit(): void {
     this.getBookmarks();
@@ -28,10 +33,9 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  onSubmit([bookmark, callback]: [Omit<Bookmark, 'id'>, Function]) {
-    this.bookmarkService.addBookmark(bookmark).subscribe(() => {
-      this.getBookmarks();
-      callback();
+  onSubmit(bookmark: Omit<Bookmark, 'id'>) {
+    this.bookmarkService.addBookmark(bookmark).subscribe((newBookmark) => {
+      this.router.navigate(['/results', newBookmark.id]);
     });
   }
 }
