@@ -5,12 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { ResultsComponent } from './pages/results/results.component';
+import { FormComponent } from './components/form/form.component';
+import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OverviewComponent,
-    ResultsComponent
+    ResultsComponent,
+    FormComponent,
+    BookmarksComponent
   ],
   imports: [
     BrowserModule,
