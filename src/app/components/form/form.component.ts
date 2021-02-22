@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Bookmark } from 'src/app/models/bookmark';
 
 @Component({
@@ -10,14 +10,19 @@ import { Bookmark } from 'src/app/models/bookmark';
 // TODO: validation
 export class FormComponent {
   @Output() submitForm = new EventEmitter<any>();
+  URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+
   bookmarkForm = this.fb.group({
-    url: [''],
+    url: ['', [Validators.required, Validators.pattern(this.URL_REGEX)]],
   });
 
   constructor(private fb: FormBuilder) {}
 
   onFormSubmit() {
     const newBookmark: Omit<Bookmark, 'id'> = this.bookmarkForm.value;
-    this.submitForm.emit(newBookmark);
+
+    if (this.bookmarkForm.valid) {
+      this.submitForm.emit(newBookmark);
+    }
   }
 }
