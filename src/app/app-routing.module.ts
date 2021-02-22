@@ -7,7 +7,7 @@ import { ResultsComponent } from './pages/results/results.component';
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
   { path: 'overview', component: OverviewComponent },
-  { path: 'results', component: ResultsComponent },
+  { path: 'results/:id', component: ResultsComponent },
 ];
 
 @NgModule({
