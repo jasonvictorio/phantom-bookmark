@@ -12,6 +12,7 @@ import { BookmarkService } from 'src/app/services/bookmark.service';
 export class OverviewComponent implements OnInit {
   bookmarks: Bookmark[] = [];
   bookmark: Bookmark | null = null;
+  pagination: [number, number] = [0, 20];
 
   constructor(
     private router: Router,
@@ -23,9 +24,11 @@ export class OverviewComponent implements OnInit {
   }
 
   getBookmarks(): void {
-    this.bookmarkService.getBookmarks().subscribe((bookmarks) => {
-      this.bookmarks = bookmarks;
-    });
+    this.bookmarkService
+      .getBookmarks(this.pagination)
+      .subscribe((bookmarks) => {
+        this.bookmarks = bookmarks;
+      });
   }
 
   onDeleteBookmark(bookmark: Bookmark): void {
@@ -54,5 +57,16 @@ export class OverviewComponent implements OnInit {
 
   onClearBookmark() {
     this.bookmark = null;
+  }
+
+  previous() {
+    const [from, max] = this.pagination;
+    this.pagination = [from - 20, max];
+    this.getBookmarks();
+  }
+  next() {
+    const [from, max] = this.pagination;
+    this.pagination = [from + 20, max];
+    this.getBookmarks();
   }
 }

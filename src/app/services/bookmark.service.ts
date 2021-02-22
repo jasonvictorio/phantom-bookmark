@@ -13,11 +13,11 @@ export class BookmarkService {
     this.initializeLocalStorage();
   }
 
-  getBookmarks(): Observable<Bookmark[]> {
+  getBookmarks([from, max]: [number, number]): Observable<Bookmark[]> {
     this.updateLocalBookmarks(
       this.getLocalStorage(this.LOCAL_STORAGE_KEY) ?? []
     );
-    return of(this.bookmarks);
+    return of(this.bookmarks.slice(from, from + max));
   }
 
   getBookmark(id: number): Observable<Bookmark | undefined> {
