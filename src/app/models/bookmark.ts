@@ -1,3 +1,3 @@
 export class Bookmark {
-  constructor(id: number, url: string) {}
+  constructor(public id: number, public url: string) {}
 }
