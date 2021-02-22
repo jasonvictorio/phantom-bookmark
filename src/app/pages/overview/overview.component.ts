@@ -28,10 +28,10 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  onSubmit(bookmark: Omit<Bookmark, 'id'>) {
+  onSubmit([bookmark, callback]: [Omit<Bookmark, 'id'>, Function]) {
     this.bookmarkService.addBookmark(bookmark).subscribe(() => {
-      // this.bookmarkForm.reset();
       this.getBookmarks();
+      callback();
     });
   }
 }
