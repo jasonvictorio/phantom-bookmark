@@ -6,14 +6,17 @@ import { Bookmark } from '../models/bookmark';
   providedIn: 'root',
 })
 export class BookmarkService {
-  bookmarks: Bookmark[] = [
-    { id: 1, url: 'https://angular.io/' },
-    { id: 2, url: 'https://angular.io/2' },
-    { id: 3, url: 'https://angular.io/3' },
-  ];
-  constructor() {}
+  LOCAL_STORAGE_KEY = 'app-bookmarks';
+  bookmarks: Bookmark[] = [];
+
+  constructor() {
+    this.initializeLocalStorage();
+  }
 
   getBookmarks(): Observable<Bookmark[]> {
+    this.updateLocalBookmarks(
+      this.getLocalStorage(this.LOCAL_STORAGE_KEY) ?? []
+    );
     return of(this.bookmarks);
   }
 
@@ -26,33 +29,63 @@ export class BookmarkService {
       id: this.getNewId(),
       ...bookmark,
     };
-    this.bookmarks = [...this.bookmarks, newBookmark];
+    this.updateLocalBookmarks([...this.bookmarks, newBookmark]);
     return of(newBookmark);
   }
 
   deleteBookmark(bookmark: Bookmark): Observable<Bookmark | undefined> {
-    this.bookmarks = this.bookmarks.filter(
-      (_bookmark) => _bookmark.id !== bookmark.id
+    this.updateLocalBookmarks(
+      this.bookmarks.filter((_bookmark) => _bookmark.id !== bookmark.id)
     );
     return of(bookmark);
   }
 
   updateBookmark(bookmark: Bookmark): Observable<Bookmark> {
-    this.bookmarks = this.bookmarks.map((_bookmark) =>
-      _bookmark.id === bookmark.id ? bookmark : _bookmark
+    this.updateLocalBookmarks(
+      this.bookmarks.map((_bookmark) =>
+        _bookmark.id === bookmark.id ? bookmark : _bookmark
+      )
     );
     return of(bookmark);
   }
 
   // helper functions
+  private updateLocalBookmarks(bookmarks: Bookmark[]) {
+    this.bookmarks = bookmarks;
+    this.setLocalStorage(this.LOCAL_STORAGE_KEY, JSON.stringify(bookmarks));
+  }
+
   private getNewId(): number {
     // this function assumes the id of tail in bookmarks[] be the biggest number
     // note: backend should handle id generation
     const lastBookmark: Bookmark = this.bookmarks.slice(-1)[0];
-    return lastBookmark.id;
+    return lastBookmark ? lastBookmark.id + 1 : 0;
   }
 
   private getBookmarkById(id: number): Bookmark | undefined {
     return this.bookmarks.find((bookmark) => bookmark.id === id);
+  }
+
+  private initializeLocalStorage(): void {
+    const localStorageBookmarks = this.getLocalStorage<Bookmark[]>(
+      this.LOCAL_STORAGE_KEY
+    );
+
+    // set localStorageBookmarks to [] if not found (expected on first run)
+    if (localStorageBookmarks === null) {
+      this.setLocalStorage(this.LOCAL_STORAGE_KEY, '[]');
+      this.bookmarks = [];
+    } else {
+      this.bookmarks = localStorageBookmarks;
+    }
+  }
+
+  // generic local storage functions
+  private getLocalStorage<T>(key: string): T | null {
+    const localStorageValue = localStorage.getItem(key);
+    return localStorageValue ? JSON.parse(localStorageValue) : null;
+  }
+  private setLocalStorage(key: string, value: string) {
+    localStorage.setItem(key, value);
   }
 }
