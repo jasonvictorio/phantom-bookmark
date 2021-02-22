@@ -1,6 +1,8 @@
 <ul>
   <li *ngFor="let bookmark of bookmarks">
     <div>{{ bookmark.id }}: {{ bookmark.url }}</div>
-    <button type="button" (click)="deleteBookmark(bookmark)">delete</button>
+    <button type="button" (click)="deleteBookmark.emit(bookmark)">
+      delete
+    </button>
   </li>
 </ul>

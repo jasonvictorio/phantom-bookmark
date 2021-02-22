@@ -1,2 +1,4 @@
-<app-form></app-form>
-<app-bookmarks></app-bookmarks>
+<app-bookmarks
+  [bookmarks]="bookmarks"
+  (deleteBookmark)="onDeleteBookmark($event)"
+></app-bookmarks>
