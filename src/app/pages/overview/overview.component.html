@@ -1,5 +1,10 @@
-<app-form (submitForm)="onSubmit($event)"></app-form>
+<app-form
+  [bookmark]="bookmark"
+  (submitForm)="onSubmit($event)"
+  (clearBookmark)="onClearBookmark()"
+></app-form>
 <app-bookmarks
   [bookmarks]="bookmarks"
   (deleteBookmark)="onDeleteBookmark($event)"
+  (editBookmark)="onEditBookmark($event)"
 ></app-bookmarks>

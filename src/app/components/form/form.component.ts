@@ -1,4 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Bookmark } from 'src/app/models/bookmark';
 
@@ -8,8 +15,10 @@ import { Bookmark } from 'src/app/models/bookmark';
   styleUrls: ['./form.component.scss'],
 })
 // TODO: validation
-export class FormComponent {
+export class FormComponent implements OnChanges {
+  @Input() bookmark: Bookmark | null = null;
   @Output() submitForm = new EventEmitter<any>();
+  @Output() clearBookmark = new EventEmitter<any>();
   URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
   errorMessage: string | null = null;
 
@@ -23,8 +32,20 @@ export class FormComponent {
     const newBookmark: Omit<Bookmark, 'id'> = this.bookmarkForm.value;
     this.errorMessage = this.getErrorMessage();
 
-    if (this.bookmarkForm.valid) {
+    if (!this.bookmarkForm.valid) return;
+    if (this.bookmark) {
+      this.submitForm.emit({ ...this.bookmark, ...newBookmark });
+    } else {
       this.submitForm.emit(newBookmark);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.errorMessage = null;
+    if (changes.bookmark.currentValue === null) {
+      this.bookmarkForm.reset();
+    } else {
+      this.bookmarkForm.patchValue(changes.bookmark.currentValue);
     }
   }
 

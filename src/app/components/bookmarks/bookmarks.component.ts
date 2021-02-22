@@ -10,4 +10,5 @@ import { Bookmark } from 'src/app/models/bookmark';
 export class BookmarksComponent {
   @Input() bookmarks?: Bookmark[];
   @Output() deleteBookmark = new EventEmitter<Bookmark>();
+  @Output() editBookmark = new EventEmitter<Bookmark>();
 }

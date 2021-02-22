@@ -1,9 +1,13 @@
 <form [formGroup]="bookmarkForm" (ngSubmit)="onFormSubmit()" class="mb-l">
   <label>
-    <span>add new bookmark url: </span>
+    <span *ngIf="bookmark">edit bookmark url: </span>
+    <span *ngIf="bookmark === null">add new bookmark url: </span>
     <input formControlName="url" />
   </label>
 
   <button type="submit">submit</button>
+  <button *ngIf="bookmark" type="button" (click)="clearBookmark.emit()">
+    clear
+  </button>
   <div *ngIf="errorMessage" class="text-error bold">{{ errorMessage }}</div>
 </form>

@@ -11,6 +11,7 @@ import { BookmarkService } from 'src/app/services/bookmark.service';
 })
 export class OverviewComponent implements OnInit {
   bookmarks: Bookmark[] = [];
+  bookmark: Bookmark | null = null;
 
   constructor(
     private router: Router,
@@ -33,9 +34,25 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  onSubmit(bookmark: Omit<Bookmark, 'id'>) {
-    this.bookmarkService.addBookmark(bookmark).subscribe((newBookmark) => {
-      this.router.navigate(['/results', newBookmark.id]);
-    });
+  onEditBookmark(bookmark: Bookmark): void {
+    this.bookmark = bookmark;
+  }
+
+  onSubmit(bookmark: { id?: number; url: string }) {
+    if (bookmark.id) {
+      this.bookmarkService
+        .updateBookmark(bookmark as Bookmark)
+        .subscribe((newBookmark) => {
+          this.router.navigate(['/results', newBookmark.id]);
+        });
+    } else {
+      this.bookmarkService.addBookmark(bookmark).subscribe((newBookmark) => {
+        this.router.navigate(['/results', newBookmark.id]);
+      });
+    }
+  }
+
+  onClearBookmark() {
+    this.bookmark = null;
   }
 }
