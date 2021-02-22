@@ -1,1 +1,14 @@
-<p>results works!</p>
+<div>
+  <div>Thank you for submitting your bookmark</div>
+
+  <div>Here is your receipt</div>
+
+  <div class="results-bookmark">
+    <div class="results-property" *ngFor="let property of bookmark | keyvalue">
+      <div class="results-label">{{ property.key }}</div>
+      <div class="results-value">{{ property.value }}</div>
+    </div>
+  </div>
+
+  <a routerLink="/overview">Click here to go back</a>
+</div>
