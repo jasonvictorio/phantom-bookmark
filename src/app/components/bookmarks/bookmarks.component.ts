@@ -22,4 +22,10 @@ export class BookmarksComponent implements OnInit {
       this.bookmarks = bookmarks;
     });
   }
+
+  deleteBookmark(bookmark: Bookmark): void {
+    this.bookmarkService.deleteBookmark(bookmark).subscribe(() => {
+      this.getBookmarks();
+    });
+  }
 }
